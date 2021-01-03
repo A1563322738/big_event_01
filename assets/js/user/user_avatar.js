@@ -1,0 +1,53 @@
+$(function() {
+    // 1.1 获取裁剪区域的 DOM 元素
+    var $image = $('#image')
+        // 1.2 配置选项
+    const options = {
+        // 纵横比
+        aspectRatio: 1,
+        // 指定预览区域
+        preview: '.img-preview'
+    }
+
+    // 1.3 创建裁剪区域
+    $image.cropper(options)
+        // 2.更换剪裁的图片
+    $('#btnChooseImage').on('click', function() {
+            $('#file').click();
+            console.log(222);
+        })
+        // 2.1绑定选择文件，渲染到界面
+    $('#file').on('change', function(e) {
+            console.log(e);
+            var fileList = e.target.files;
+            if (fileList.length === 0) return layui.layer.msg('请选择照片')
+            var newImgURL = URL.createObjectURL(fileList[0])
+            $image
+                .cropper('destroy') // 销毁旧的裁剪区域
+                .attr('src', newImgURL) // 重新设置图片路径
+                .cropper(options) // 重新初始化裁剪区域
+
+        })
+        // 2.3点确定上传图片
+    $('#btnUpload').on('click', function() {
+        var dataURL = $image
+            .cropper('getCroppedCanvas', { // 创建一个 Canvas 画布
+                width: 100,
+                height: 100
+            })
+            .toDataURL('image/png') // 将 Canvas 画布上的内容，转化为 base64 格式的字符串
+            // 调用接口把图片上传到服务器
+        $.ajax({
+            type: "post",
+            url: "/my/update/avatar",
+            data: {
+                avatar: dataURL
+            },
+            success: function(res) {
+                if (res.status !== 0) return layui.layer.msg('更换失败')
+                layui.layer.msg('更换头像成功')
+                window.parent.getUserInfo();
+            }
+        });
+    })
+})
