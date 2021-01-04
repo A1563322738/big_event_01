@@ -2,7 +2,8 @@
 $.ajaxPrefilter(function(options) {
     // console.log(options);
     //options代表配置对象
-    options.url = 'http://ajax.frontend.itheima.net' + options.url
+    // http://ajax.frontend.itheima.net原址
+    options.url = 'http://api-breakingnews-web.itheima.net' + options.url
         // console.log(options.url);
     if (options.url.indexOf('/my/') !== -1) {
         options.headers = {

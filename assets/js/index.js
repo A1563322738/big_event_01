@@ -55,7 +55,7 @@ function getUserInfo() {
 function renderAvatar(user) {
     var name = user.nickname || user.nickname;
     $('#welcome').html('欢迎  ' + name);
-    console.log(user.user_pic);
+    // console.log(user.user_pic);
     if (user.user_pic !== null) {
         // 如果地址不为空,就成图片头像
         $('.layui-nav-img').attr('src', user.user_pic).show();
